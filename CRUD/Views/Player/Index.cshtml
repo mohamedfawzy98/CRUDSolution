@@ -1,0 +1,121 @@
+﻿@model IEnumerable<PlayersViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>
+    <i class="bi bi-arrow-bar-up"></i>
+    Player
+</h1>
+
+<hr />
+
+<a class="btn btn-primary" asp-action="Create">
+    Add Player
+    <i class="bi bi-plus"></i>
+</a>
+
+<div class="mt-4">
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            No Player Found !!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var player in Model)
+            {
+                <div class="col-12">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                <img class="poster" width="200" src="~/files/Image/@player.Poster" />
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body d-flex flex-column justify-content-between h-100">
+                                    <div>
+                                        <h5 class="card-title">@player.Name - @player.YearBirth</h5>
+                                        <p class="card-text text-justify">@(player.Description.Length > 500 ? $"{player.Description.Substring(0, 500)}..." : player.Description)</p>
+
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="card-text mb-0 mt-2">
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <small class="text-body-secondary">  @player.Rate.ToString("0.0")</small>
+                                        </p>
+                                        <div>
+                                            <a asp-action="Details" asp-route-id="@player.Id" class="btn btn-outline-secondary">
+                                                <i class="bi bi-camera-reels"></i>
+                                                Details
+                                            </a>
+
+                                            <a asp-action="Edit" asp-route-id="@player.Id" class="btn btn-outline-primary">
+                                                <i class="bi bi-pencil"></i>
+                                                Edit
+                                            </a>
+                                            <a href="javascript:;" class="btn btn-danger js-delete" data-id ="@player.Id">
+                                                <i class="bi bi-trash"></i>
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            }
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    
+    <script>
+
+        $(document).ready(function () {
+            $('.js-delete').on('click', function () {
+                
+                var btn = $(this);
+
+                bootbox.confirm({
+                    message: 'Are you sure delete this player?',
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-danger'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-outline-secondary'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: '/player/delete/' + btn.data('id'),
+                                success: function () {
+                                    btn.parents('.col-12').fadeOut();
+                                    toastr.success('Player Deleted');
+                                },
+                                error: function () {
+                                    toastr.error('something went worng!');
+                                }
+                            });
+                        }
+                    }
+                });
+               
+            });
+            
+        });
+    </script>
+}
+

@@ -1,0 +1,22 @@
+﻿@model CounteryViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h1>Create Countery</h1>
+<hr />
+
+
+        <form asp-action="Create">
+    <partial name="Pratialcountery/View" model="Model" />
+        </form>
+
+ 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

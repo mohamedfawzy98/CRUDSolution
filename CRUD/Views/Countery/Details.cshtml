@@ -1,0 +1,35 @@
+﻿@model CounteryViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h1>Details Countery</h1>
+
+
+<div>
+
+    <label asp-for="Id" class="col-form-lable"></label>
+    <input asp-for="Id" class="form-control" readonly />
+</div>
+<br />
+<div class="form-group">
+    <label asp-for="Name" class="col-form-lable"></label>
+    <input asp-for="Name" class="form-control" readonly />
+
+</div>
+
+ 
+
+    <button asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-4">
+            <i class="bi bi-pencil"></i>
+        Edit
+    </button>
+    <a class="btn btn-outline-secondary mt-4" asp-action="Index">
+        <i class="bi bi-x"></i>
+        Back To List
+    </a>
+    
+
+
